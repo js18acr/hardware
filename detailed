@@ -1,0 +1,66 @@
+<?php
+	//check if a value is present for parameter
+	if (isset($_GET["singl"])){
+		//create variable and capture parameter
+		$singleproduct = $_GET["singl"];
+		
+		//connection to database
+		$db = mysqli_connect("localhost", "js18acr", "8Mm3V9Nj", "hardware")
+		OR DIE (mysqli_connect_error);
+		
+		
+		$sql = "SELECT * FROM product WHERE productid=$singleproduct";
+		
+		//execute query
+		$query = mysqli_query($db, $sql);
+	}
+	else echo "Parameter missing?";
+?>
+
+<html>
+	<head>
+		<title>JGS Hardware- Product Details</title>	
+		<!-- link to external css file -->
+		<link rel="stylesheet" href="stylerp.css" />
+	</head>
+	
+	<body>
+		<header class="main-header">		
+		<ul class="main-nav">
+			<li><a href="homepage.php">Home</a></li>
+			<li><a href="products.php">Products</a></li>
+		</ul>
+		</header>
+		
+		<!-- Individual Product -->
+		<h1>Detailed Product</h1>
+		<ul class="single">
+		
+		<?php
+			
+			if($query){
+				//capture data
+				$record = mysqli_fetch_array($query, MYSQLI_ASSOC);
+				$pid = $record["productid"];
+				$pname = $record["productname"];
+				$pdesc = $record["productdescription"];
+				$pimg = $record["productimage"];
+				$pprice = $record["productprice"];
+			}
+			else echo "problems";
+		?>
+		
+		<li>
+			<img class="largeimg" src="images/<?php echo $pimg; ?>" alt="reference" />
+			<p class="leftside">
+				<h2><?php echo $pname; ?></h2>
+				<h3><?php echo $pdesc; ?></h3>
+				<p>Price: $<?php echo $pprice; ?></p>
+			</p>
+		
+		</li>
+		
+		
+		</ul>
+	</body>
+</html>
