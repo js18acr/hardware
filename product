@@ -1,0 +1,69 @@
+<?php
+	//login to database
+	$db = mysqli_connect("localhost", "js18acr", "8Mm3V9Nj", "hardware")
+	OR die(mysqli_connect_error());
+	
+	$sql = "SELECT * FROM product";
+
+	$query = mysqli_query($db, $sql);
+	
+?>
+
+
+<html>
+	<head>
+		<title>JGS Hardware-Products</title>	
+		<!-- External css file -->
+		<link rel="stylesheet" href="stylerp.css" />
+	</head>
+	
+	<body>
+		<header class="main-header">		
+		<ul class="main-nav">
+			<li><a href="homepage.php">Home</a></li>
+			<li><a href="products.php">Products</a></li>
+		</ul>
+		</header>
+		
+		<!-- List of products -->
+		<h1>Product Listing</h1>
+		
+<ul class="product">
+		
+		<?php
+		
+			if($query){
+				//if there are results
+				
+				//loop for creating a variable for each record in database, query results are now associated to a record variable
+				while($record = mysqli_fetch_array($query, MYSQLI_ASSOC)){
+					//create variables for each database field
+					$pid = $record["productid"];
+					$pname = $record["productname"];
+					$pdesc = $record["productdescription"];
+					$pimg = $record["productimage"];
+					$pprice = $record["productprice"];
+			?>
+			
+			<li>
+				<!-- creating dynamic link -->
+				<a href="detailed.php?singl=<?php echo $pid; ?>">
+					<img src="images/<?php echo $pimg; ?>" alt="reference" />
+					<h2><?php echo $pname; ?></h2>
+				</a>
+				<p>Price: $<?php echo $pprice; ?></p>
+			</li>
+			
+			<?php
+			
+				}
+			}
+			else echo "something wrong here";
+		?>			
+		
+
+
+		</ul>
+		
+	</body>
+</html>		
